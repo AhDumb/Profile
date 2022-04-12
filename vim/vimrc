@@ -1,0 +1,131 @@
+"           _
+"          (_)
+"  __   __  _   _ __ ___
+"  \ \ / / | | | '_ ` _ \
+"   \ V /  | | | | | | | |
+"    \_/   |_| |_| |_| |_|
+
+
+" 加载基本配置
+source $HOME/.vim/profile/basic.vim
+
+" 加载快捷键配置
+source $HOME/.vim/profile/keybindings.vim
+
+" 加载头部注释模块
+source $HOME/.vim/profile/commentary.vim
+
+call plug#begin('~/.vim/plugged')
+" 加载插件
+source $HOME/.vim/profile/plugs.vim
+call plug#end()
+
+" 主题设置
+set background=dark
+let g:onedark_termcolors=256
+" colorscheme onedark
+colorscheme dracula
+highlight Normal ctermbg=None
+let &t_ZH="\e[3m"
+let &t_ZR="\e[23m"
+
+" 加载插件配置
+source $HOME/.vim/profile/plugs-profile.vim
+
+" airline
+let g:airline_theme="dracula"
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+" 不显示文档总字数
+let g:airline#extensions#wordcount#enabled = 0
+" 取消显示warning部分
+let g:airline_section_warning = ''
+" section_x显示文件名
+let g:airline_section_x = '%{expand("%")}'
+" section_y显示时间
+let g:airline_section_y = airline#section#create(['%{strftime("%D")}'])
+" section_z显示日期
+let g:airline_section_z = airline#section#create(['%{strftime("%H:%M")}'])
+
+" 打开文件自动定位到最后编辑的位置
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 一键编译运行
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+func! BuildRunCode()
+    exec "w"
+    if &filetype == 'c'
+        execute "! gcc % -o ./build/%<"
+        execute "! time ./build/%<"
+    elseif &filetype == 'cpp'
+        execute "! g++ % -o ./build/%<"
+        execute "! time ./build/%<"
+    elseif &filetype == 'python'
+        exec '! time python %'
+    elseif &filetype == 'java'
+        exec '! javac -d ../out/ %'
+        exec '! time java -classpath ../out %:r'
+    elseif &filetype == 'go'
+        exec '! time go run %'
+    elseif &filetype == 'sh'
+        exec '! time bash %'
+    elseif &filetype == 'typescript'
+        exec '! tsc --outFile ./js/%:r.js %'
+        exec '! time node ./js/%:r.js'
+    else
+        echo "为设置运行程序"
+    endif
+endfunction
+
+func! BuildCode()
+    exec "w"
+    if &filetype == 'c'
+        execute "! gcc % -o ./build/%<"
+    elseif &filetype == 'cpp'
+        execute "! g++ % -o ./build/%<"
+    elseif &filetype == 'java'
+        exec '! javac -d ../out/ %'
+    elseif &filetype == 'typescript'
+        exec '! tsc --outFile ./js/%:r.js %'
+    else
+        echo "为设置编译程序"
+    endif
+endfunction
+
+func! RunCode()
+    if &filetype == 'c'
+        execute "! time ./build/%<"
+    elseif &filetype == 'cpp'
+        execute "! time ./build/%<"
+    elseif &filetype == 'java'
+        exec '! time java -classpath ../out %:r'
+    elseif &filetype == 'typescript'
+        exec '! time node ./js/%:r.js'
+    else
+        echo "为设置运行程序"
+    endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 更改光标
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if has("autocmd")
+    au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
+    au InsertEnter,InsertChange *
+                \ if v:insertmode == 'i' |
+                \   silent execute '!echo -ne "\e[6 q"' | redraw! |
+                \ elseif v:insertmode == 'r' |
+                \   silent execute '!echo -ne "\e[4 q"' | redraw! |
+                \ endif
+    au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+endif

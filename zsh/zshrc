@@ -1,0 +1,61 @@
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# 主题
+ZSH_THEME="cloud"
+
+plugins=(
+  # fzf 搜索
+  fzf
+  # git 简化命令
+  git # 双击esc添加sudo sudo
+  # 解压
+  extract
+
+  autojump
+
+  git-open
+
+  zsh-autosuggestions
+
+  zsh-syntax-highlighting
+
+  zsh-completions
+)
+
+#source $ZSH/custom/plugins/dracula-zsh-syntax-highlighting/zsh-syntax-highlighting.sh
+
+source $ZSH/oh-my-zsh.sh
+
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+
+HIST_STAMPS="yyyy-mm-dd"
+
+# ll
+alias ll="exa -l"
+alias la="exa -la"
+
+# neovim
+alias vim="nvim"
+alias svim="sudo -E nvim"
+
+# trash
+# 移到垃圾桶
+alias rm="trash-put"
+# 清理垃圾桶
+alias rmc="trash-empty"
+# 列出垃圾桶列表
+alias rml="trash-list"
+# 恢复垃圾
+alias rmr="trash-restore"
+
+alias c="clear"
+alias ra="ranger"
+
+alias neo="neofetch | lolcat"
+
+alias lgit="lazygit"
+
+[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh

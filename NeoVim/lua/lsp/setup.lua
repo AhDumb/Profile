@@ -2,8 +2,9 @@ local lsp_installer = require("nvim-lsp-installer")
 
 local servers = {
   sumneko_lua = require('lsp.config.lua'),
-  --jedi_language_server = require('lsp.config.jedi_language_server')
-  pylsp = require('lsp.config.pylsp'),
+  --jedi_language_server = require('lsp.config.jedi_language_server'),
+  --pylsp = require('lsp.config.pylsp'),
+  pyright = require('lsp.config.pyright'),
   clangd = require('lsp.config.clangd'),
   jdtls = require('lsp.config.jdtls'),
   bashls = require('lsp.config.bashls'),

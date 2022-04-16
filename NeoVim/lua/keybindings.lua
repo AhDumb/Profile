@@ -14,6 +14,8 @@ map("n", "H", "0", opt)
 map("n", "-", "^", opt)
 map("n", "e", "$", opt)
 
+map("n", "n", "j", opt)
+
 -- ctrl u / ctrl + d  只移动9行，默认移动半屏
 --map("n", "<C-u>", "9k", opt)
 --map("n", "<C-d>", "9j", opt)
